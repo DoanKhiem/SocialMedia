@@ -22,20 +22,21 @@
     <hr class="sidebar-divider">
 
     <!-- Heading -->
-{{--    <div class="sidebar-heading">--}}
-{{--        Interface--}}
-{{--    </div>--}}
+    {{--    <div class="sidebar-heading">--}}
+    {{--        Interface--}}
+    {{--    </div>--}}
 
     <!-- Nav Item - Banner Management Menu -->
     <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
-{{--            <i class="fas fa-fw fa-cog"></i>--}}
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true"
+           aria-controls="collapseTwo">
+            {{--            <i class="fas fa-fw fa-cog"></i>--}}
             <i class="fa-solid fa-image"></i>
             <span>Banner Management</span>
         </a>
         <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
-{{--                <h6 class="collapse-header">Custom Components:</h6>--}}
+                {{--                <h6 class="collapse-header">Custom Components:</h6>--}}
                 <a class="collapse-item" href="buttons.html">Buttons</a>
                 <a class="collapse-item" href="cards.html">Cards</a>
             </div>
@@ -44,14 +45,15 @@
 
     <!-- Nav Item - Category Management Menu -->
     <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities" aria-expanded="true" aria-controls="collapseUtilities">
-{{--            <i class="fas fa-fw fa-wrench"></i>--}}
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities"
+           aria-expanded="true" aria-controls="collapseUtilities">
+            {{--            <i class="fas fa-fw fa-wrench"></i>--}}
             <i class="fa-solid fa-sitemap"></i>
             <span>Category Management</span>
         </a>
         <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
-{{--                <h6 class="collapse-header">Custom Utilities:</h6>--}}
+                {{--                <h6 class="collapse-header">Custom Utilities:</h6>--}}
                 <a class="collapse-item" href="utilities-color.html">Colors</a>
                 <a class="collapse-item" href="utilities-border.html">Borders</a>
                 <a class="collapse-item" href="utilities-animation.html">Animations</a>
@@ -62,8 +64,9 @@
 
     <!-- Nav Item - Products Management Menu -->
     <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
-{{--            <i class="fas fa-fw fa-cog"></i>--}}
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true"
+           aria-controls="collapseTwo">
+            {{--            <i class="fas fa-fw fa-cog"></i>--}}
             <i class="fa-solid fa-briefcase"></i>
             <span>Products Management</span>
         </a>
@@ -78,8 +81,9 @@
 
     <!-- Nav Item - Carts Management Menu -->
     <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
-{{--            <i class="fas fa-fw fa-cog"></i>--}}
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true"
+           aria-controls="collapseTwo">
+            {{--            <i class="fas fa-fw fa-cog"></i>--}}
             <i class="fa-solid fa-cart-plus"></i>
             <span>Carts Management</span>
         </a>
@@ -95,15 +99,16 @@
     <!-- Nav Item - Orders Management -->
     <li class="nav-item">
         <a class="nav-link" href="charts.html">
-{{--            <i class="fas fa-fw fa-chart-area"></i>--}}
+            {{--            <i class="fas fa-fw fa-chart-area"></i>--}}
             <i class="fa-solid fa-layer-group"></i>
             <span>Orders Management</span></a>
     </li>
 
     <!-- Nav Item - Post Category Menu -->
     <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
-{{--            <i class="fas fa-fw fa-cog"></i>--}}
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true"
+           aria-controls="collapseTwo">
+            {{--            <i class="fas fa-fw fa-cog"></i>--}}
             <i class="fa-solid fa-sitemap"></i>
             <span>Post Category</span>
         </a>
@@ -118,8 +123,9 @@
 
     <!-- Nav Item - Post Tag Menu -->
     <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
-{{--            <i class="fas fa-fw fa-cog"></i>--}}
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true"
+           aria-controls="collapseTwo">
+            {{--            <i class="fas fa-fw fa-cog"></i>--}}
             <i class="fa-solid fa-tags"></i>
             <span>Post Tag</span>
         </a>
@@ -134,8 +140,9 @@
 
     <!-- Nav Item - Post Management Menu -->
     <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
-{{--            <i class="fas fa-fw fa-cog"></i>--}}
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true"
+           aria-controls="collapseTwo">
+            {{--            <i class="fas fa-fw fa-cog"></i>--}}
             <i class="fa-solid fa-newspaper"></i>
             <span>Post Management</span>
         </a>
@@ -150,8 +157,9 @@
 
     <!-- Nav Item - Review Management Menu -->
     <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
-{{--            <i class="fas fa-fw fa-cog"></i>--}}
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true"
+           aria-controls="collapseTwo">
+            {{--            <i class="fas fa-fw fa-cog"></i>--}}
             <i class="fa-solid fa-star"></i>
             <span>Review Management</span>
         </a>
@@ -166,7 +174,8 @@
 
     <!-- Nav Item - Coupon Management Menu -->
     <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true"
+           aria-controls="collapseTwo">
             {{--            <i class="fas fa-fw fa-cog"></i>--}}
             <i class="fa-solid fa-ticket"></i>
             <span>Coupon Management</span>
@@ -182,7 +191,8 @@
 
     <!-- Nav Item - Users Management Menu -->
     <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true"
+           aria-controls="collapseTwo">
             {{--            <i class="fas fa-fw fa-cog"></i>--}}
             <i class="fa-solid fa-users"></i>
             <span>Users Management</span>
@@ -198,7 +208,8 @@
 
     <!-- Nav Item - Comments Management Menu -->
     <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true"
+           aria-controls="collapseTwo">
             {{--            <i class="fas fa-fw fa-cog"></i>--}}
             <i class="fa-solid fa-comments"></i>
             <span>Comments Management</span>
@@ -220,53 +231,53 @@
     </li>
 
     <!-- Divider -->
-{{--    <hr class="sidebar-divider">--}}
+    {{--    <hr class="sidebar-divider">--}}
 
     <!-- Heading -->
-{{--    <div class="sidebar-heading">--}}
-{{--        Addons--}}
-{{--    </div>--}}
+    {{--    <div class="sidebar-heading">--}}
+    {{--        Addons--}}
+    {{--    </div>--}}
 
     <!-- Nav Item - Pages Collapse Menu -->
-{{--    <li class="nav-item">--}}
-{{--        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages" aria-expanded="true" aria-controls="collapsePages">--}}
-{{--            <i class="fas fa-fw fa-folder"></i>--}}
-{{--            <span>Pages</span>--}}
-{{--        </a>--}}
-{{--        <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">--}}
-{{--            <div class="bg-white py-2 collapse-inner rounded">--}}
-{{--                <h6 class="collapse-header">Login Screens:</h6>--}}
-{{--                <a class="collapse-item" href="login.html">Login</a>--}}
-{{--                <a class="collapse-item" href="register.html">Register</a>--}}
-{{--                <a class="collapse-item" href="forgot-password.html">Forgot Password</a>--}}
-{{--                <div class="collapse-divider"></div>--}}
-{{--                <h6 class="collapse-header">Other Pages:</h6>--}}
-{{--                <a class="collapse-item" href="404.html">404 Page</a>--}}
-{{--                <a class="collapse-item" href="blank.html">Blank Page</a>--}}
-{{--            </div>--}}
-{{--        </div>--}}
-{{--    </li>--}}
+    {{--    <li class="nav-item">--}}
+    {{--        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages" aria-expanded="true" aria-controls="collapsePages">--}}
+    {{--            <i class="fas fa-fw fa-folder"></i>--}}
+    {{--            <span>Pages</span>--}}
+    {{--        </a>--}}
+    {{--        <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">--}}
+    {{--            <div class="bg-white py-2 collapse-inner rounded">--}}
+    {{--                <h6 class="collapse-header">Login Screens:</h6>--}}
+    {{--                <a class="collapse-item" href="login.html">Login</a>--}}
+    {{--                <a class="collapse-item" href="register.html">Register</a>--}}
+    {{--                <a class="collapse-item" href="forgot-password.html">Forgot Password</a>--}}
+    {{--                <div class="collapse-divider"></div>--}}
+    {{--                <h6 class="collapse-header">Other Pages:</h6>--}}
+    {{--                <a class="collapse-item" href="404.html">404 Page</a>--}}
+    {{--                <a class="collapse-item" href="blank.html">Blank Page</a>--}}
+    {{--            </div>--}}
+    {{--        </div>--}}
+    {{--    </li>--}}
 
     <!-- Nav Item - Charts -->
-{{--    <li class="nav-item">--}}
-{{--        <a class="nav-link" href="charts.html">--}}
-{{--            <i class="fas fa-fw fa-chart-area"></i>--}}
-{{--            <span>Charts</span></a>--}}
-{{--    </li>--}}
+    {{--    <li class="nav-item">--}}
+    {{--        <a class="nav-link" href="charts.html">--}}
+    {{--            <i class="fas fa-fw fa-chart-area"></i>--}}
+    {{--            <span>Charts</span></a>--}}
+    {{--    </li>--}}
 
     <!-- Nav Item - Tables -->
-{{--    <li class="nav-item">--}}
-{{--        <a class="nav-link" href="tables.html">--}}
-{{--            <i class="fas fa-fw fa-table"></i>--}}
-{{--            <span>Tables</span></a>--}}
-{{--    </li>--}}
+    {{--    <li class="nav-item">--}}
+    {{--        <a class="nav-link" href="tables.html">--}}
+    {{--            <i class="fas fa-fw fa-table"></i>--}}
+    {{--            <span>Tables</span></a>--}}
+    {{--    </li>--}}
 
     <!-- Divider -->
-{{--    <hr class="sidebar-divider d-none d-md-block">--}}
+    {{--    <hr class="sidebar-divider d-none d-md-block">--}}
 
     <!-- Sidebar Toggler (Sidebar) -->
-{{--    <div class="text-center d-none d-md-inline">--}}
-{{--        <button class="rounded-circle border-0" id="sidebarToggle"></button>--}}
-{{--    </div>--}}
+    {{--    <div class="text-center d-none d-md-inline">--}}
+    {{--        <button class="rounded-circle border-0" id="sidebarToggle"></button>--}}
+    {{--    </div>--}}
 
 </ul>

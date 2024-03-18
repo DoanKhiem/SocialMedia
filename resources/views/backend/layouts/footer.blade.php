@@ -1,16 +1,20 @@
-<!-- Bootstrap core JavaScript-->
-<script src="{{asset('backend/vendor/jquery/jquery.min.js')}}"></script>
-<script src="{{asset('backend/vendor/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
-
-<!-- Core plugin JavaScript-->
-<script src="{{asset('backend/vendor/jquery-easing/jquery.easing.min.js')}}"></script>
-
-<!-- Custom scripts for all pages-->
-<script src="{{asset('backend/js/sb-admin-2.min.js')}}"></script>
-
-<!-- Page level plugins -->
-<script src="{{asset('backend/vendor/chart.js/Chart.min.js')}}"></script>
-
-<!-- Page level custom scripts -->
-<script src="{{asset('backend/js/demo/chart-area-demo.js')}}"></script>
-<script src="{{asset('backend/js/demo/chart-pie-demo.js')}}"></script>
+<!-- plugins:js -->
+<script src="{{asset('backend/vendors/js/vendor.bundle.base.js')}}"></script>
+<!-- endinject -->
+<!-- Plugin js for this page -->
+<script src="{{asset('backend/vendors/chart.js/Chart.min.js')}}"></script>
+<script src="{{asset('backend/vendors/progressbar.js/progressbar.min.js')}}"></script>
+<script src="{{asset('backend/vendors/jvectormap/jquery-jvectormap.min.js')}}"></script>
+<script src="{{asset('backend/vendors/jvectormap/jquery-jvectormap-world-mill-en.js')}}"></script>
+<script src="{{asset('backend/vendors/owl-carousel-2/owl.carousel.min.js')}}"></script>
+<!-- End plugin js for this page -->
+<!-- inject:js -->
+<script src="{{asset('backend/js/off-canvas.js')}}"></script>
+<script src="{{asset('backend/js/hoverable-collapse.js')}}"></script>
+<script src="{{asset('backend/js/misc.js')}}"></script>
+<script src="{{asset('backend/js/settings.js')}}"></script>
+<script src="{{asset('backend/js/todolist.js')}}"></script>
+<!-- endinject -->
+<!-- Custom js for this page -->
+<script src="{{asset('backend/js/dashboard.js')}}"></script>
+<!-- End custom js for this page -->

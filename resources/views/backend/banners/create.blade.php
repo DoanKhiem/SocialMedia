@@ -4,6 +4,7 @@
     <link rel="stylesheet" href="{{asset('backend/vendors/select2/select2.min.css')}}">
     <link rel="stylesheet" href="{{asset('backend/vendors/select2-bootstrap-theme/select2-bootstrap.min.css')}}">
     <!-- End plugin css for this page -->
+
 @endsection
 
 @section('content')
@@ -11,11 +12,11 @@
 <div class="main-panel">
     <div class="content-wrapper">
         <div class="page-header">
-            <h3 class="page-title"> Form elements </h3>
+            <h3 class="page-title"> Create Banner </h3>
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="#">Forms</a></li>
-                    <li class="breadcrumb-item active" aria-current="page">Form elements</li>
+                    <li class="breadcrumb-item"><a href="#">Banners</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Create banner</li>
                 </ol>
             </nav>
         </div>
@@ -23,45 +24,58 @@
             <div class="col-12 grid-margin stretch-card">
                 <div class="card">
                     <div class="card-body">
-                        <h4 class="card-title">Basic form elements</h4>
-                        <p class="card-description"> Basic form elements </p>
+                        {{--                        <h4 class="card-title">Basic form elements</h4>--}}
+                        {{--                        <p class="card-description"> Basic form elements </p>--}}
                         <form class="forms-sample">
                             <div class="form-group">
-                                <label for="exampleInputName1">Name</label>
-                                <input type="text" class="form-control" id="exampleInputName1" placeholder="Name">
+                                <label for="exampleInputName1">Title</label>
+                                <input type="text" value="{{old('title')}}" name="title" class="form-control"
+                                       id="exampleInputName1" placeholder="Title">
                             </div>
                             <div class="form-group">
-                                <label for="exampleInputEmail3">Email address</label>
-                                <input type="email" class="form-control" id="exampleInputEmail3" placeholder="Email">
+                                <label for="exampleTextarea1">Description</label>
+                                <textarea name="description" class="form-control" id="exampleTextarea1"
+                                          rows="4">{{old('description')}}</textarea>
+                                <!-- markup -->
+{{--                                <textarea id="summernote-editor" name="description">{!! old('description') !!}</textarea>--}}
                             </div>
                             <div class="form-group">
-                                <label for="exampleInputPassword4">Password</label>
-                                <input type="password" class="form-control" id="exampleInputPassword4" placeholder="Password">
+                                <label for="exampleSelectGender">Conditions</label>
+                                <select class="form-control" id="exampleSelectGender" name="condition">
+                                    <option value="banner" {{old('condition') == 'banner' ? 'selected' : ''}}>Banner
+                                    </option>
+                                    <option value="promo" {{old('condition') == 'promo' ? 'selected' : ''}}>Promote
+                                    </option>
+                                </select>
                             </div>
                             <div class="form-group">
-                                <label for="exampleSelectGender">Gender</label>
-                                <select class="form-control" id="exampleSelectGender">
-                                    <option>Male</option>
-                                    <option>Female</option>
+                                <label for="exampleSelectGender">Status</label>
+                                <select class="form-control" id="exampleSelectGender" name="status">
+                                    <option value="active" {{old('status') == 'active' ? 'selected' : ''}}>Active
+                                    </option>
+                                    <option value="inactive" {{old('status') == 'inactive' ? 'selected' : ''}}>
+                                        Inactive
+                                    </option>
                                 </select>
                             </div>
                             <div class="form-group">
                                 <label>File upload</label>
-                                <input type="file" name="img[]" class="file-upload-default">
-                                <div class="input-group col-xs-12">
-                                    <input type="text" class="form-control file-upload-info" disabled placeholder="Upload Image">
-                                    <span class="input-group-append">
-                            <button class="file-upload-browse btn btn-primary" type="button">Upload</button>
-                          </span>
+                                <div class="input-group">
+                                   <span class="input-group-btn">
+                                     <a id="lfm" data-input="thumbnail" data-preview="holder" class="btn btn-primary">
+                                       <i class="fa fa-picture-o"></i> Choose
+                                     </a>
+                                   </span>
+                                    <input id="thumbnail" class="form-control" type="text" name="filepath">
                                 </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="exampleInputCity1">City</label>
-                                <input type="text" class="form-control" id="exampleInputCity1" placeholder="Location">
-                            </div>
-                            <div class="form-group">
-                                <label for="exampleTextarea1">Textarea</label>
-                                <textarea class="form-control" id="exampleTextarea1" rows="4"></textarea>
+                                <div id="holder" style="margin-top:15px;max-height:100px;"></div>
+{{--                                <input type="file" name="img[]" class="file-upload-default">--}}
+{{--                                <div class="input-group col-xs-12">--}}
+{{--                                    <input type="text" class="form-control file-upload-info" disabled placeholder="Upload Image">--}}
+{{--                                    <span class="input-group-append">--}}
+{{--                                        <button class="file-upload-browse btn btn-primary" type="button">Upload</button>--}}
+{{--                                      </span>--}}
+{{--                                </div>--}}
                             </div>
                             <button type="submit" class="btn btn-primary mr-2">Submit</button>
                             <button class="btn btn-dark">Cancel</button>
@@ -95,4 +109,11 @@
     <script src="{{asset('backend/js/typeahead.js')}}"></script>
     <script src="{{asset('backend/js/select2.js')}}"></script>
     <!-- End custom js for this page -->
+
+
+    <script src="/vendor/laravel-filemanager/js/stand-alone-button.js"></script>
+    <script>
+        $('#lfm').filemanager('image');
+    </script>
+
 @endsection

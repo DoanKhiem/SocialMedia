@@ -14,20 +14,25 @@
             </div>
             <div class="row">
                 <div class="col-lg-12 grid-margin stretch-card">
+                    @include('backend.layouts.notification')
+                </div>
+                <div class="col-lg-12 grid-margin stretch-card">
                     <div class="card">
                         <div class="card-body">
-                            <h4 class="card-title">Striped Table</h4>
-                            <p class="card-description"> Add class <code>.table-striped</code>
-                            </p>
+                            <h4 class="card-title">Banner Table</h4>
+{{--                            <p class="card-description"> Add class <code>.table-striped</code>--}}
+{{--                            </p>--}}
                             <div class="table-responsive">
                                 <table class="table table-striped">
                                     <thead>
                                     <tr>
-                                        <th> User </th>
-                                        <th> First name </th>
-                                        <th> Progress </th>
-                                        <th> Amount </th>
-                                        <th> Deadline </th>
+                                        <th> STT </th>
+                                        <th> Title </th>
+                                        <th> Description </th>
+                                        <th> Photo </th>
+                                        <th> Condition </th>
+                                        <th> Status </th>
+                                        <th> Actions </th>
                                     </tr>
                                     </thead>
                                     <tbody>

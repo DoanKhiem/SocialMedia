@@ -23,10 +23,20 @@
         <div class="row">
             <div class="col-12 grid-margin stretch-card">
                 <div class="card">
+                    @if($errors->any())
+                        <div class="alert alert-danger">
+                            <ul>
+                                @foreach($errors->all() as $error)
+                                    <li>{{$error}}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    @endif
                     <div class="card-body">
                         {{--                        <h4 class="card-title">Basic form elements</h4>--}}
                         {{--                        <p class="card-description"> Basic form elements </p>--}}
-                        <form class="forms-sample">
+                        <form class="forms-sample" action="{{route('banner.store')}}" method="POST">
+                            @csrf
                             <div class="form-group">
                                 <label for="exampleInputName1">Title</label>
                                 <input type="text" value="{{old('title')}}" name="title" class="form-control"
@@ -66,7 +76,7 @@
                                        <i class="fa fa-picture-o"></i> Choose
                                      </a>
                                    </span>
-                                    <input id="thumbnail" class="form-control" type="text" name="filepath">
+                                    <input id="thumbnail" class="form-control" type="text" name="photo">
                                 </div>
                                 <div id="holder" style="margin-top:15px;max-height:100px;"></div>
 {{--                                <input type="file" name="img[]" class="file-upload-default">--}}

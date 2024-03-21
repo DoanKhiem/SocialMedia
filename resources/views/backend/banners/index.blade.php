@@ -7,8 +7,8 @@
                 <h3 class="page-title"> Basic Tables </h3>
                 <nav aria-label="breadcrumb">
                     <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="#">Tables</a></li>
-                        <li class="breadcrumb-item active" aria-current="page">Basic tables</li>
+                        <li class="breadcrumb-item"><a href="#">Total Banner: {{$banners->count()}}</a></li>
+{{--                        <li class="breadcrumb-item active" aria-current="page">Basic tables</li>--}}
                     </ol>
                 </nav>
             </div>
@@ -42,8 +42,8 @@
 
                                             <td> {{$banner->title}} </td>
                                             <td> {{$banner->description}} </td>
-                                            <td class="py-1">
-                                                <img src="{{$banner->photo}}" alt="image" />
+                                            <td>
+                                                <img class="h-auto" style="width: 100px; border-radius: unset" src="{{$banner->photo}}" alt="image" />
                                             </td>
                                             <td>
                                                 @if($banner->condition == 'banner')
@@ -61,7 +61,7 @@
                                                         <i class="mdi mdi-table-edit"></i>
                                                     </button>
                                                 </a>
-                                                <form action="{{route('banner.destroy', $banner->id)}}" method="POST">
+                                                <form action="{{route('banner.destroy', $banner->id)}}" method="POST" class="d-inline">
                                                     @csrf
                                                     @method('delete')
                                                     <button type="button" class="deleteBtn btn btn-inverse-danger btn-icon">
@@ -72,8 +72,6 @@
                                             </td>
                                         </tr>
                                     @endforeach
-
-
                                     </tbody>
                                 </table>
                             </div>

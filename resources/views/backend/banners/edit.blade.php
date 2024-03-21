@@ -15,7 +15,7 @@
                 <h3 class="page-title"> Edit Banner </h3>
                 <nav aria-label="breadcrumb">
                     <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="#">Banners</a></li>
+                        <li class="breadcrumb-item"><a href="{{route('banner.index')}}">Banners</a></li>
                         <li class="breadcrumb-item active" aria-current="page">Edit banner</li>
                     </ol>
                 </nav>

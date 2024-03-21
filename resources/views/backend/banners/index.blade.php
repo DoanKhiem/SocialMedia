@@ -61,9 +61,14 @@
                                                         <i class="mdi mdi-table-edit"></i>
                                                     </button>
                                                 </a>
-                                                <button type="button" class="btn btn-inverse-danger btn-icon">
-                                                    <i class="mdi mdi-delete-forever"></i>
-                                                </button>
+                                                <form action="{{route('banner.destroy', $banner->id)}}" method="POST">
+                                                    @csrf
+                                                    @method('delete')
+                                                    <button type="button" class="deleteBtn btn btn-inverse-danger btn-icon">
+                                                        <i class="mdi mdi-delete-forever"></i>
+                                                    </button>
+                                                </form>
+
                                             </td>
                                         </tr>
                                     @endforeach
@@ -110,6 +115,32 @@
                     } else {
                         alert('Please try again');
                     }
+                }
+            });
+        });
+    </script>
+    <script>
+        $('.deleteBtn').on('click', function (e) {
+            e.preventDefault();
+            var form = $(this).closest('form');
+            // var dataID = $(this).data('id');
+            // var link = $(this).attr('href');
+            Swal.fire({
+                title: "Are you sure?",
+                text: "You won't be able to revert this!",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Yes, delete it!"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    form.submit();
+                    // Swal.fire({
+                    //     title: "Deleted!",
+                    //     text: "Your file has been deleted.",
+                    //     icon: "success"
+                    // });
                 }
             });
         });

@@ -56,9 +56,11 @@
                                                 <input type="checkbox" name="toggle" value="{{$banner->id}}" {{$banner->status == 'active' ? 'checked' : ''}} data-toggle="toggle" data-on="active" data-off="inactive">
                                             </td>
                                             <td>
-                                                <button type="button" class="btn btn-inverse-warning btn-icon">
-                                                    <i class="mdi mdi-table-edit"></i>
-                                                </button>
+                                                <a href="{{route('banner.edit', $banner->id)}}">
+                                                    <button type="button" class="btn btn-inverse-warning btn-icon">
+                                                        <i class="mdi mdi-table-edit"></i>
+                                                    </button>
+                                                </a>
                                                 <button type="button" class="btn btn-inverse-danger btn-icon">
                                                     <i class="mdi mdi-delete-forever"></i>
                                                 </button>

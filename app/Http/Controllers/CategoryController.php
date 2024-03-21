@@ -16,6 +16,16 @@ class CategoryController extends Controller
         return view('backend.categories.index', compact('categories'));
     }
 
+    public function categoryStatus(Request $request)
+    {
+        if ($request->mode == 'true') {
+            Category::where('id', $request->id)->update(['status' => 'active']);
+        } else {
+            Category::where('id', $request->id)->update(['status' => 'inactive']);
+        }
+        return response()->json(['msg' => 'Status updated successfully', 'status' => 'true']);
+    }
+
     /**
      * Show the form for creating a new resource.
      */

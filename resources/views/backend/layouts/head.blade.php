@@ -19,3 +19,6 @@
 <link rel="stylesheet" href="{{asset('backend/css/style.css')}}">
 <!-- End layout styles -->
 <link rel="shortcut icon" href="{{asset('backend/images/favicon.png')}}" />
+
+
+<link href="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/css/bootstrap4-toggle.min.css" rel="stylesheet">

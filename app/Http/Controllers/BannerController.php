@@ -13,7 +13,18 @@ class BannerController extends Controller
      */
     public function index()
     {
-        return view('backend.banners.index');
+        $banners = Banner::orderBy('id', 'DESC')->get();
+        return view('backend.banners.index', compact('banners'));
+    }
+
+    public function bannerStatus(Request $request)
+    {
+        if ($request->mode == 'true') {
+            Banner::where('id', $request->id)->update(['status' => 'active']);
+        } else {
+            Banner::where('id', $request->id)->update(['status' => 'inactive']);
+        }
+        return response()->json(['msg' => 'Status updated successfully', 'status' => 'true']);
     }
 
     /**

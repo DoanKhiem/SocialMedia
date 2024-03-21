@@ -4,10 +4,10 @@
     <div class="main-panel">
         <div class="content-wrapper">
             <div class="page-header">
-                <h3 class="page-title"> Basic Tables </h3>
+                <h3 class="page-title"> Category </h3>
                 <nav aria-label="breadcrumb">
                     <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="#">Total Banner: {{$categories->count()}}</a></li>
+                        <li class="breadcrumb-item"><a href="#">Total Category: {{$categories->count()}}</a></li>
 {{--                        <li class="breadcrumb-item active" aria-current="page">Basic tables</li>--}}
                     </ol>
                 </nav>
@@ -19,7 +19,7 @@
                 <div class="col-lg-12 grid-margin stretch-card">
                     <div class="card">
                         <div class="card-body">
-                            <h4 class="card-title">Banner Table</h4>
+                            <h4 class="card-title">Category Table</h4>
 {{--                            <p class="card-description"> Add class <code>.table-striped</code>--}}
 {{--                            </p>--}}
                             <div class="table-responsive">

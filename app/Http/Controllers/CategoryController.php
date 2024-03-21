@@ -71,6 +71,16 @@ class CategoryController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $category = Category::findOrFail($id);
+        if ($category) {
+            $status = $category->delete();
+            if ($status) {
+                return redirect()->route('category.index')->with('success', 'Category deleted successfully');
+            } else {
+                return back()->with('error', 'Error occurred while deleting category');
+            }
+        } else {
+            return back()->with('error', 'Data not found');
+        }
     }
 }

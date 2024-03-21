@@ -13,7 +13,18 @@ class BannerController extends Controller
      */
     public function index()
     {
-        return view('backend.banners.index');
+        $banners = Banner::orderBy('id', 'DESC')->get();
+        return view('backend.banners.index', compact('banners'));
+    }
+
+    public function bannerStatus(Request $request)
+    {
+        if ($request->mode == 'true') {
+            Banner::where('id', $request->id)->update(['status' => 'active']);
+        } else {
+            Banner::where('id', $request->id)->update(['status' => 'inactive']);
+        }
+        return response()->json(['msg' => 'Status updated successfully', 'status' => 'true']);
     }
 
     /**
@@ -64,7 +75,12 @@ class BannerController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $banner = Banner::findOrFail($id);
+        if ($banner) {
+            return view('backend.banners.edit', compact('banner'));
+        } else {
+            return back()->with('error', 'Data not found');
+        }
     }
 
     /**
@@ -72,7 +88,26 @@ class BannerController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $banner = Banner::findOrFail($id);
+        if ($banner) {
+            $this->validate($request, [
+                'title' => 'string|required',
+                'description' => 'string|nullable',
+                'photo' => 'required',
+                'condition' => 'nullable|in:banner,promo',
+                'status' => 'nullable|in:active,inactive',
+            ]);
+            $data = $request->all();
+
+            $status = $banner->fill($data)->save();
+            if ($status) {
+                return redirect()->route('banner.index')->with('success', 'Banner updated successfully');
+            } else {
+                return back()->with('error', 'Error occurred while creating banner');
+            }
+        } else {
+            return back()->with('error', 'Data not found');
+        }
     }
 
     /**
@@ -80,6 +115,16 @@ class BannerController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $banner = Banner::findOrFail($id);
+        if ($banner) {
+            $status = $banner->delete();
+            if ($status) {
+                return redirect()->route('banner.index')->with('success', 'Banner deleted successfully');
+            } else {
+                return back()->with('error', 'Error occurred while deleting banner');
+            }
+        } else {
+            return back()->with('error', 'Data not found');
+        }
     }
 }

@@ -7,8 +7,8 @@
                 <h3 class="page-title"> Basic Tables </h3>
                 <nav aria-label="breadcrumb">
                     <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="#">Tables</a></li>
-                        <li class="breadcrumb-item active" aria-current="page">Basic tables</li>
+                        <li class="breadcrumb-item"><a href="#">Total Banner: {{$banners->count()}}</a></li>
+{{--                        <li class="breadcrumb-item active" aria-current="page">Basic tables</li>--}}
                     </ol>
                 </nav>
             </div>
@@ -36,97 +36,42 @@
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    <tr>
-                                        <td class="py-1">
-                                            <img src="../../assets/images/faces-clipart/pic-1.png" alt="image" />
-                                        </td>
-                                        <td> Herman Beck </td>
-                                        <td>
-                                            <div class="progress">
-                                                <div class="progress-bar bg-success" role="progressbar" style="width: 25%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
-                                            </div>
-                                        </td>
-                                        <td> $ 77.99 </td>
-                                        <td> May 15, 2015 </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="py-1">
-                                            <img src="../../assets/images/faces-clipart/pic-2.png" alt="image" />
-                                        </td>
-                                        <td> Messsy Adam </td>
-                                        <td>
-                                            <div class="progress">
-                                                <div class="progress-bar bg-danger" role="progressbar" style="width: 75%" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
-                                            </div>
-                                        </td>
-                                        <td> $245.30 </td>
-                                        <td> July 1, 2015 </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="py-1">
-                                            <img src="../../assets/images/faces-clipart/pic-3.png" alt="image" />
-                                        </td>
-                                        <td> John Richards </td>
-                                        <td>
-                                            <div class="progress">
-                                                <div class="progress-bar bg-warning" role="progressbar" style="width: 90%" aria-valuenow="90" aria-valuemin="0" aria-valuemax="100"></div>
-                                            </div>
-                                        </td>
-                                        <td> $138.00 </td>
-                                        <td> Apr 12, 2015 </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="py-1">
-                                            <img src="../../assets/images/faces-clipart/pic-4.png" alt="image" />
-                                        </td>
-                                        <td> Peter Meggik </td>
-                                        <td>
-                                            <div class="progress">
-                                                <div class="progress-bar bg-primary" role="progressbar" style="width: 50%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
-                                            </div>
-                                        </td>
-                                        <td> $ 77.99 </td>
-                                        <td> May 15, 2015 </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="py-1">
-                                            <img src="../../assets/images/faces-clipart/pic-1.png" alt="image" />
-                                        </td>
-                                        <td> Edward </td>
-                                        <td>
-                                            <div class="progress">
-                                                <div class="progress-bar bg-danger" role="progressbar" style="width: 35%" aria-valuenow="35" aria-valuemin="0" aria-valuemax="100"></div>
-                                            </div>
-                                        </td>
-                                        <td> $ 160.25 </td>
-                                        <td> May 03, 2015 </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="py-1">
-                                            <img src="../../assets/images/faces-clipart/pic-2.png" alt="image" />
-                                        </td>
-                                        <td> John Doe </td>
-                                        <td>
-                                            <div class="progress">
-                                                <div class="progress-bar bg-info" role="progressbar" style="width: 65%" aria-valuenow="65" aria-valuemin="0" aria-valuemax="100"></div>
-                                            </div>
-                                        </td>
-                                        <td> $ 123.21 </td>
-                                        <td> April 05, 2015 </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="py-1">
-                                            <img src="../../assets/images/faces-clipart/pic-3.png" alt="image" />
-                                        </td>
-                                        <td> Henry Tom </td>
-                                        <td>
-                                            <div class="progress">
-                                                <div class="progress-bar bg-warning" role="progressbar" style="width: 20%" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100"></div>
-                                            </div>
-                                        </td>
-                                        <td> $ 150.00 </td>
-                                        <td> June 16, 2015 </td>
-                                    </tr>
+                                    @foreach($banners as $banner)
+                                        <tr>
+                                            <td> {{ $loop->index + 1 }} </td>
+
+                                            <td> {{$banner->title}} </td>
+                                            <td> {{$banner->description}} </td>
+                                            <td>
+                                                <img class="h-auto" style="width: 100px; border-radius: unset" src="{{$banner->photo}}" alt="image" />
+                                            </td>
+                                            <td>
+                                                @if($banner->condition == 'banner')
+                                                    <label class="badge badge-success">{{$banner->condition}} </label>
+                                                @else
+                                                    <label class="badge badge-primary">{{$banner->condition}} </label>
+                                                @endif
+                                            </td>
+                                            <td>
+                                                <input type="checkbox" name="toggle" value="{{$banner->id}}" {{$banner->status == 'active' ? 'checked' : ''}} data-toggle="toggle" data-on="active" data-off="inactive">
+                                            </td>
+                                            <td>
+                                                <a href="{{route('banner.edit', $banner->id)}}">
+                                                    <button type="button" class="btn btn-inverse-warning btn-icon">
+                                                        <i class="mdi mdi-table-edit"></i>
+                                                    </button>
+                                                </a>
+                                                <form action="{{route('banner.destroy', $banner->id)}}" method="POST" class="d-inline">
+                                                    @csrf
+                                                    @method('delete')
+                                                    <button type="button" class="deleteBtn btn btn-inverse-danger btn-icon">
+                                                        <i class="mdi mdi-delete-forever"></i>
+                                                    </button>
+                                                </form>
+
+                                            </td>
+                                        </tr>
+                                    @endforeach
                                     </tbody>
                                 </table>
                             </div>
@@ -145,6 +90,59 @@
         </footer>
         <!-- partial -->
     </div>
+
+@endsection
+
+@section('footer')
+
+    <script>
+        $('input[name=toggle]').change(function(){
+            var mode = $(this).prop('checked');
+            var id = $(this).val();
+            $.ajax({
+                url: "{{route('banner.status')}}",
+                type: "POST",
+                data: {
+                    _token: '{{csrf_token()}}',
+                    mode: mode,
+                    id: id
+                },
+                success: function (data) {
+                    if (data.status) {
+                        alert(data.msg);
+                    } else {
+                        alert('Please try again');
+                    }
+                }
+            });
+        });
+    </script>
+    <script>
+        $('.deleteBtn').on('click', function (e) {
+            e.preventDefault();
+            var form = $(this).closest('form');
+            // var dataID = $(this).data('id');
+            // var link = $(this).attr('href');
+            Swal.fire({
+                title: "Are you sure?",
+                text: "You won't be able to revert this!",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Yes, delete it!"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    form.submit();
+                    // Swal.fire({
+                    //     title: "Deleted!",
+                    //     text: "Your file has been deleted.",
+                    //     icon: "success"
+                    // });
+                }
+            });
+        });
+    </script>
 
 @endsection
 

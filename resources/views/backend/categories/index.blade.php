@@ -4,10 +4,10 @@
     <div class="main-panel">
         <div class="content-wrapper">
             <div class="page-header">
-                <h3 class="page-title"> Banner </h3>
+                <h3 class="page-title"> Category </h3>
                 <nav aria-label="breadcrumb">
                     <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="#">Total Banner: {{$banners->count()}}</a></li>
+                        <li class="breadcrumb-item"><a href="#">Total Category: {{$categories->count()}}</a></li>
 {{--                        <li class="breadcrumb-item active" aria-current="page">Basic tables</li>--}}
                     </ol>
                 </nav>
@@ -19,7 +19,7 @@
                 <div class="col-lg-12 grid-margin stretch-card">
                     <div class="card">
                         <div class="card-body">
-                            <h4 class="card-title">Banner Table</h4>
+                            <h4 class="card-title">Category Table</h4>
 {{--                            <p class="card-description"> Add class <code>.table-striped</code>--}}
 {{--                            </p>--}}
                             <div class="table-responsive">
@@ -28,40 +28,44 @@
                                     <tr>
                                         <th> STT </th>
                                         <th> Title </th>
-                                        <th> Description </th>
+{{--                                        <th> Description </th>--}}
                                         <th> Photo </th>
-                                        <th> Condition </th>
+                                        <th> Is parent </th>
+                                        <th> Parents </th>
+{{--                                        <th> Condition </th>--}}
                                         <th> Status </th>
                                         <th> Actions </th>
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    @foreach($banners as $banner)
+                                    @foreach($categories as $category)
                                         <tr>
                                             <td> {{ $loop->index + 1 }} </td>
 
-                                            <td> {{$banner->title}} </td>
-                                            <td> {{$banner->description}} </td>
+                                            <td> {{$category->title}} </td>
+{{--                                            <td> {!! html_entity_decode($category->summary) !!} </td>--}}
                                             <td>
-                                                <img class="h-auto" style="width: 100px; border-radius: unset" src="{{$banner->photo}}" alt="image" />
+                                                <img class="h-auto" style="width: 100px; border-radius: unset" src="{{$category->photo}}" alt="image" />
+                                            </td>
+                                            <td> {{$category->is_parent ? 'Yes' : 'No' }} </td>
+                                            <td> {{$category->parent_id}} </td>
+{{--                                            <td>--}}
+{{--                                                @if($category->condition == 'banner')--}}
+{{--                                                    <label class="badge badge-success">{{$category->condition}} </label>--}}
+{{--                                                @else--}}
+{{--                                                    <label class="badge badge-primary">{{$category->condition}} </label>--}}
+{{--                                                @endif--}}
+{{--                                            </td>--}}
+                                            <td>
+                                                <input type="checkbox" name="toggle" value="{{$category->id}}" {{$category->status == 'active' ? 'checked' : ''}} data-toggle="toggle" data-on="active" data-off="inactive">
                                             </td>
                                             <td>
-                                                @if($banner->condition == 'banner')
-                                                    <label class="badge badge-success">{{$banner->condition}} </label>
-                                                @else
-                                                    <label class="badge badge-primary">{{$banner->condition}} </label>
-                                                @endif
-                                            </td>
-                                            <td>
-                                                <input type="checkbox" name="toggle" value="{{$banner->id}}" {{$banner->status == 'active' ? 'checked' : ''}} data-toggle="toggle" data-on="active" data-off="inactive">
-                                            </td>
-                                            <td>
-                                                <a href="{{route('banner.edit', $banner->id)}}">
+                                                <a href="{{route('category.edit', $category->id)}}">
                                                     <button type="button" class="btn btn-inverse-warning btn-icon">
                                                         <i class="mdi mdi-table-edit"></i>
                                                     </button>
                                                 </a>
-                                                <form action="{{route('banner.destroy', $banner->id)}}" method="POST" class="d-inline">
+                                                <form action="{{route('category.destroy', $category->id)}}" method="POST" class="d-inline">
                                                     @csrf
                                                     @method('delete')
                                                     <button type="button" class="deleteBtn btn btn-inverse-danger btn-icon">
@@ -100,7 +104,7 @@
             var mode = $(this).prop('checked');
             var id = $(this).val();
             $.ajax({
-                url: "{{route('banner.status')}}",
+                url: "{{route('category.status')}}",
                 type: "POST",
                 data: {
                     _token: '{{csrf_token()}}',

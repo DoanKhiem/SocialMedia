@@ -29,4 +29,8 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function () {
     // Banner
     Route::resource('banner', App\Http\Controllers\BannerController::class);
     Route::post('banner-status', [App\Http\Controllers\BannerController::class, 'bannerStatus'])->name('banner.status');
+
+    // Category
+    Route::resource('category', App\Http\Controllers\CategoryController::class);
+    Route::post('category-status', [App\Http\Controllers\CategoryController::class, 'categoryStatus'])->name('category.status');
 });

@@ -94,8 +94,8 @@
             </a>
             <div class="collapse" id="menu-categories">
                 <ul class="nav flex-column sub-menu">
-                    <li class="nav-item"> <a class="nav-link" href="pages/ui-features/buttons.html">All Banners</a></li>
-                    <li class="nav-item"> <a class="nav-link" href="pages/ui-features/dropdowns.html">Add Banner</a></li>
+                    <li class="nav-item"> <a class="nav-link" href="{{route('category.index')}}">All Category</a></li>
+                    <li class="nav-item"> <a class="nav-link" href="{{route('category.create')}}">Add Category</a></li>
                 </ul>
             </div>
         </li>

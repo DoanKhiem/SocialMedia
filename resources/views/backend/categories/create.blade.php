@@ -52,14 +52,17 @@
                             <div class="form-group">
                                 <div class="form-check form-check-primary">
                                     <label class="form-check-label">
-                                        <input class="checkbox" id="is_parent" name="is_parent" type="checkbox" checked> Is parent
+                                        <input value="1" class="checkbox" id="is_parent" name="is_parent" type="checkbox" checked> Is parent
                                     </label>
                                 </div>
                             </div>
-                            <div class="form-group">
+                            <div class="form-group d-none" id="parent_cat_div">
                                 <label for="exampleSelectGender">Parent Category</label>
                                 <select class="form-control" id="exampleSelectGender" name="parent_id">
                                     <option value="" >-- Parent Category --</option>
+                                    @foreach($parent_cats as $pcats)
+                                        <option value="{{$pcats->id}}">{{$pcats->title}}</option>
+                                    @endforeach
                                 </select>
                             </div>
                             <div class="form-group">
@@ -128,6 +131,18 @@
     <script src="/vendor/laravel-filemanager/js/stand-alone-button.js"></script>
     <script>
         $('#lfm').filemanager('image');
+    </script>
+    <script>
+        $('#is_parent').change(function (e) {
+            e.preventDefault();
+            var is_checked = $('#is_parent').prop('checked');
+            if(is_checked) {
+                $('#parent_cat_div').addClass('d-none');
+                $('#parent_cat_div').val('');
+            } else {
+                $('#parent_cat_div').removeClass('d-none');
+            }
+        });
     </script>
 
 @endsection

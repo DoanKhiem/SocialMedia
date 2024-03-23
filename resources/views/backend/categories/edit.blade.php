@@ -40,42 +40,42 @@
                                 @method('put')
                                 <div class="form-group">
                                     <label for="exampleInputName1">Title</label>
-                                    <input type="text" value="{{old('title')}}" name="title" class="form-control"
+                                    <input type="text" value="{{$category->title}}" name="title" class="form-control"
                                            id="exampleInputName1" placeholder="Title">
                                 </div>
                                 <div class="form-group">
                                     <label for="exampleTextarea1">Summary</label>
                                     <textarea name="summary" class="form-control" id="exampleTextarea1"
-                                              rows="4">{{old('summary')}}</textarea>
+                                              rows="4">{{$category->summary}}</textarea>
                                     <!-- markup -->
                                     {{--                                <textarea id="summernote-editor" name="description">{!! old('description') !!}</textarea>--}}
                                 </div>
                                 <div class="form-group">
                                     <div class="form-check form-check-primary">
                                         <label class="form-check-label">
-                                            <input value="1" class="checkbox" id="is_parent" name="is_parent" type="checkbox" checked> Is parent
+                                            <input value="{{$category->is_parent}}" class="checkbox" id="is_parent" name="is_parent" type="checkbox" {{$category->is_parent == 1 ? 'checked' : ''}}> Is parent
                                         </label>
                                     </div>
                                 </div>
-                                <div class="form-group d-none" id="parent_cat_div">
+                                <div class="form-group {{$category->is_parent == 1 ? 'd-none' : ''}}" id="parent_cat_div">
                                     <label for="exampleSelectGender">Parent Category</label>
                                     <select class="form-control" id="exampleSelectGender" name="parent_id">
                                         <option value="" >-- Parent Category --</option>
                                         @foreach($parent_cats as $pcats)
-                                            <option value="{{$pcats->id}}">{{$pcats->title}}</option>
+                                            <option value="{{$pcats->id}}" {{$pcats->id == $category->parent_id ? 'selected' : ''}}>{{$pcats->title}}</option>
                                         @endforeach
                                     </select>
                                 </div>
-                                <div class="form-group">
-                                    <label for="exampleSelectGender">Status</label>
-                                    <select class="form-control" id="exampleSelectGender" name="status">
-                                        <option value="active" {{old('status') == 'active' ? 'selected' : ''}}>Active
-                                        </option>
-                                        <option value="inactive" {{old('status') == 'inactive' ? 'selected' : ''}}>
-                                            Inactive
-                                        </option>
-                                    </select>
-                                </div>
+{{--                                <div class="form-group">--}}
+{{--                                    <label for="exampleSelectGender">Status</label>--}}
+{{--                                    <select class="form-control" id="exampleSelectGender" name="status">--}}
+{{--                                        <option value="active" {{old('status') == 'active' ? 'selected' : ''}}>Active--}}
+{{--                                        </option>--}}
+{{--                                        <option value="inactive" {{old('status') == 'inactive' ? 'selected' : ''}}>--}}
+{{--                                            Inactive--}}
+{{--                                        </option>--}}
+{{--                                    </select>--}}
+{{--                                </div>--}}
                                 <div class="form-group">
                                     <label>File upload</label>
                                     <div class="input-group">
@@ -84,7 +84,7 @@
                                        <i class="fa fa-picture-o"></i> Choose
                                      </a>
                                    </span>
-                                        <input id="thumbnail" class="form-control" type="text" name="photo">
+                                        <input id="thumbnail" class="form-control" type="text" name="photo" value="{{$category->photo}}">
                                     </div>
                                     <div id="holder" style="margin-top:15px;max-height:100px;"></div>
                                     {{--                                <input type="file" name="img[]" class="file-upload-default">--}}

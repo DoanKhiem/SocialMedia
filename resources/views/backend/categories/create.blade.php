@@ -15,7 +15,7 @@
             <h3 class="page-title"> Create Banner </h3>
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="{{route('banner.index')}}">Banners</a></li>
+                    <li class="breadcrumb-item"><a href="{{route('category.index')}}">Banners</a></li>
                     <li class="breadcrumb-item active" aria-current="page">Create banner</li>
                 </ol>
             </nav>
@@ -35,7 +35,7 @@
                     <div class="card-body">
                         {{--                        <h4 class="card-title">Basic form elements</h4>--}}
                         {{--                        <p class="card-description"> Basic form elements </p>--}}
-                        <form class="forms-sample" action="{{route('banner.store')}}" method="POST">
+                        <form class="forms-sample" action="{{route('category.store')}}" method="POST">
                             @csrf
                             <div class="form-group">
                                 <label for="exampleInputName1">Title</label>
@@ -43,19 +43,26 @@
                                        id="exampleInputName1" placeholder="Title">
                             </div>
                             <div class="form-group">
-                                <label for="exampleTextarea1">Description</label>
-                                <textarea name="description" class="form-control" id="exampleTextarea1"
-                                          rows="4">{{old('description')}}</textarea>
+                                <label for="exampleTextarea1">Summary</label>
+                                <textarea name="summary" class="form-control" id="exampleTextarea1"
+                                          rows="4">{{old('summary')}}</textarea>
                                 <!-- markup -->
 {{--                                <textarea id="summernote-editor" name="description">{!! old('description') !!}</textarea>--}}
                             </div>
                             <div class="form-group">
-                                <label for="exampleSelectGender">Conditions</label>
-                                <select class="form-control" id="exampleSelectGender" name="condition">
-                                    <option value="banner" {{old('condition') == 'banner' ? 'selected' : ''}}>Banner
-                                    </option>
-                                    <option value="promo" {{old('condition') == 'promo' ? 'selected' : ''}}>Promote
-                                    </option>
+                                <div class="form-check form-check-primary">
+                                    <label class="form-check-label">
+                                        <input value="1" class="checkbox" id="is_parent" name="is_parent" type="checkbox" checked> Is parent
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="form-group d-none" id="parent_cat_div">
+                                <label for="exampleSelectGender">Parent Category</label>
+                                <select class="form-control" id="exampleSelectGender" name="parent_id">
+                                    <option value="" >-- Parent Category --</option>
+                                    @foreach($parent_cats as $pcats)
+                                        <option value="{{$pcats->id}}" {{old('parent_id') == $pcats->id ? 'selected' : ''}}>{{$pcats->title}}</option>
+                                    @endforeach
                                 </select>
                             </div>
                             <div class="form-group">
@@ -124,6 +131,18 @@
     <script src="/vendor/laravel-filemanager/js/stand-alone-button.js"></script>
     <script>
         $('#lfm').filemanager('image');
+    </script>
+    <script>
+        $('#is_parent').change(function (e) {
+            e.preventDefault();
+            var is_checked = $('#is_parent').prop('checked');
+            if(is_checked) {
+                $('#parent_cat_div').addClass('d-none');
+                $('#parent_cat_div').val('');
+            } else {
+                $('#parent_cat_div').removeClass('d-none');
+            }
+        });
     </script>
 
 @endsection

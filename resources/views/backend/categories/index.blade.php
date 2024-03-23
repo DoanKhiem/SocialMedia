@@ -48,7 +48,7 @@
                                                 <img class="h-auto" style="width: 100px; border-radius: unset" src="{{$category->photo}}" alt="image" />
                                             </td>
                                             <td> {{$category->is_parent ? 'Yes' : 'No' }} </td>
-                                            <td> {{$category->parent_id}} </td>
+                                            <td> {{\App\Models\Category::where('id', $category->parent_id)->value('title')}} </td>
 {{--                                            <td>--}}
 {{--                                                @if($category->condition == 'banner')--}}
 {{--                                                    <label class="badge badge-success">{{$category->condition}} </label>--}}

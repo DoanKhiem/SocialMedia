@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Category;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class CategoryController extends Controller
 {
@@ -31,7 +32,8 @@ class CategoryController extends Controller
      */
     public function create()
     {
-        //
+        $parent_cats = Category::orderBy('title', 'ASC')->where('is_parent', 1)->get();
+        return view('backend.categories.create', compact('parent_cats'));
     }
 
     /**
@@ -39,7 +41,29 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $this->validate($request, [
+           'title' => 'string|required',
+            'summary' => 'string|nullable',
+            'photo' => 'required',
+            'is_parent' => 'sometimes|in:1',
+            'parent_id' => 'nullable|exists:categories,id',
+            'status' => 'nullable|in:active,inactive'
+        ]);
+        $data = $request->all();
+        $slug = Str::slug($request->title);
+        $slug_count = Category::where('slug', $slug)->count();
+        if ($slug_count > 0) {
+            $slug = time() . '-' . $slug;
+        }
+        $data['slug'] = $slug;
+        $data['is_parent'] = $request->input('parent_id', 0);
+        $status = Category::create($data);
+        if ($status) {
+            return redirect()->route('category.index')->with('success', 'Category created successfully');
+        } else {
+            return back()->with('error', 'Error occurred while creating category');
+        }
+
     }
 
     /**
@@ -55,7 +79,13 @@ class CategoryController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $category = Category::findOrFail($id);
+        $parent_cats = Category::orderBy('title', 'ASC')->where('is_parent', 1)->get();
+        if ($category) {
+            return view('backend.categories.edit', compact(['category', 'parent_cats']));
+        } else {
+            return back()->with('error', 'Data not found');
+        }
     }
 
     /**
@@ -63,7 +93,31 @@ class CategoryController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $category = Category::findOrFail($id);
+        if ($category) {
+            $this->validate($request, [
+                'title' => 'string|required',
+                'summary' => 'string|nullable',
+                'photo' => 'required',
+                'is_parent' => 'sometimes|in:1',
+                'parent_id' => 'nullable|exists:categories,id',
+                'status' => 'nullable|in:active,inactive'
+            ]);
+            $data = $request->all();
+//            dd($data);
+            if ($request->is_parent == 1) {
+                $data['parent_id'] = null;
+            }
+            $data['is_parent'] = $request->input('parent_id', 0);
+            $status = $category->fill($data)->save();
+            if ($status) {
+                return redirect()->route('category.index')->with('success', 'Category updated successfully');
+            } else {
+                return back()->with('error', 'Error occurred while creating category');
+            }
+        } else {
+            return back()->with('error', 'Data not found');
+        }
     }
 
     /**

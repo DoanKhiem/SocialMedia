@@ -12,11 +12,11 @@
     <div class="main-panel">
         <div class="content-wrapper">
             <div class="page-header">
-                <h3 class="page-title"> Edit Banner </h3>
+                <h3 class="page-title"> Edit Category </h3>
                 <nav aria-label="breadcrumb">
                     <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="{{route('banner.index')}}">Banners</a></li>
-                        <li class="breadcrumb-item active" aria-current="page">Edit banner</li>
+                        <li class="breadcrumb-item"><a href="{{route('banner.index')}}">Category</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Edit category</li>
                     </ol>
                 </nav>
             </div>
@@ -35,36 +35,43 @@
                         <div class="card-body">
                             {{--                        <h4 class="card-title">Basic form elements</h4>--}}
                             {{--                        <p class="card-description"> Basic form elements </p>--}}
-                            <form class="forms-sample" action="{{route('banner.update', $banner->id)}}" method="POST">
+                            <form class="forms-sample" action="{{route('category.update', $category->id)}}" method="POST">
                                 @csrf
                                 @method('put')
                                 <div class="form-group">
                                     <label for="exampleInputName1">Title</label>
-                                    <input type="text" value="{{$banner->title}}" name="title" class="form-control"
+                                    <input type="text" value="{{old('title')}}" name="title" class="form-control"
                                            id="exampleInputName1" placeholder="Title">
                                 </div>
                                 <div class="form-group">
-                                    <label for="exampleTextarea1">Description</label>
-                                    <textarea name="description" class="form-control" id="exampleTextarea1"
-                                              rows="4">{{$banner->description}}</textarea>
+                                    <label for="exampleTextarea1">Summary</label>
+                                    <textarea name="summary" class="form-control" id="exampleTextarea1"
+                                              rows="4">{{old('summary')}}</textarea>
                                     <!-- markup -->
                                     {{--                                <textarea id="summernote-editor" name="description">{!! old('description') !!}</textarea>--}}
                                 </div>
                                 <div class="form-group">
-                                    <label for="exampleSelectGender">Conditions</label>
-                                    <select class="form-control" id="exampleSelectGender" name="condition">
-                                        <option value="banner" {{$banner->condition == 'banner' ? 'selected' : ''}}>Banner
-                                        </option>
-                                        <option value="promo" {{$banner->condition == 'promo' ? 'selected' : ''}}>Promote
-                                        </option>
+                                    <div class="form-check form-check-primary">
+                                        <label class="form-check-label">
+                                            <input value="1" class="checkbox" id="is_parent" name="is_parent" type="checkbox" checked> Is parent
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="form-group d-none" id="parent_cat_div">
+                                    <label for="exampleSelectGender">Parent Category</label>
+                                    <select class="form-control" id="exampleSelectGender" name="parent_id">
+                                        <option value="" >-- Parent Category --</option>
+                                        @foreach($parent_cats as $pcats)
+                                            <option value="{{$pcats->id}}">{{$pcats->title}}</option>
+                                        @endforeach
                                     </select>
                                 </div>
                                 <div class="form-group">
                                     <label for="exampleSelectGender">Status</label>
                                     <select class="form-control" id="exampleSelectGender" name="status">
-                                        <option value="active" {{$banner->status == 'active' ? 'selected' : ''}}>Active
+                                        <option value="active" {{old('status') == 'active' ? 'selected' : ''}}>Active
                                         </option>
-                                        <option value="inactive" {{$banner->status == 'inactive' ? 'selected' : ''}}>
+                                        <option value="inactive" {{old('status') == 'inactive' ? 'selected' : ''}}>
                                             Inactive
                                         </option>
                                     </select>
@@ -77,7 +84,7 @@
                                        <i class="fa fa-picture-o"></i> Choose
                                      </a>
                                    </span>
-                                        <input id="thumbnail" class="form-control" type="text" name="photo" value="{{$banner->photo}}">
+                                        <input id="thumbnail" class="form-control" type="text" name="photo">
                                     </div>
                                     <div id="holder" style="margin-top:15px;max-height:100px;"></div>
                                     {{--                                <input type="file" name="img[]" class="file-upload-default">--}}
@@ -126,5 +133,16 @@
     <script>
         $('#lfm').filemanager('image');
     </script>
-
+    <script>
+        $('#is_parent').change(function (e) {
+            e.preventDefault();
+            var is_checked = $('#is_parent').prop('checked');
+            if(is_checked) {
+                $('#parent_cat_div').addClass('d-none');
+                $('#parent_cat_div').val('');
+            } else {
+                $('#parent_cat_div').removeClass('d-none');
+            }
+        });
+    </script>
 @endsection

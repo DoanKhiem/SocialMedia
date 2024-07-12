@@ -1,34 +1,70 @@
 <script setup lang="ts">
-import {Disclosure, DisclosureButton, DisclosurePanel} from '@headlessui/vue'
+import {Disclosure, DisclosureButton, DisclosurePanel, Menu, MenuButton, MenuItem, MenuItems} from '@headlessui/vue'
+import {EllipsisVerticalIcon, PencilIcon, TrashIcon} from '@heroicons/vue/20/solid'
 // import { ChevronUpIcon } from '@heroicons/vue/20/solid'
-defineProps({
-    post: Object,
+import PostUserHeader from "@/Components/app/PostUserHeader.vue";
+
+const props = defineProps({
+    post: Object
 })
+
+const emit = defineEmits(['editClick'])
 
 function isImage(attachment: { mime: string }) {
     const mime = attachment.mime.split('/')
     return mime[0].toLowerCase() === 'image'
 }
 
+function openEditModal() {
+    emit('editClick', props.post)
+}
+
 </script>
 
 <template>
     <div class="bg-white border rounded p-4 mb-3">
-        <div class="flex items-center gap-2 mb-3">
-            <a href="javascript:void(0)">
-                <img :src="post.user.avatar_url"
-                     class="w-[40px] rounded-full border border-2 transition-all hover:border-blue-500"/>
-            </a>
-            <div>
-                <h4 class="font-bold">
-                    <a href="javascript:void(0)" class="hover:underline">{{ post.user.name }}</a>
-                    <template v-if="post.group">
-                        >
-                        <a href="javascript:void(0)" class="hover:underline">{{ post.group.name }}</a>
-                    </template>
-                </h4>
-                <small class="text-gray-400">{{ post.created_at }}</small>
-            </div>
+        <div class="flex items-center justify-between mb-3">
+            <PostUserHeader :post="post"/>
+            <Menu as="div" class="relative inline-block text-left">
+                <div>
+                    <MenuButton class="w-8 h-8 rounded-full hover:bg-black/5 transition flex items-center justify-center">
+                        <EllipsisVerticalIcon class="w-5 h-5" aria-hidden="true" />
+                    </MenuButton>
+                </div>
+                <transition
+                    enter-active-class="transition duration-100 ease-out"
+                    enter-from-class="transform scale-95 opacity-0"
+                    enter-to-class="transform scale-100 opacity-100"
+                    leave-active-class="transition duration-75 ease-in"
+                    leave-from-class="transform scale-100 opacity-100"
+                    leave-to-class="transform scale-95 opacity-0">
+                    <MenuItems class="absolute right-0 mt-2 w-32 origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black/5 focus:outline-none">
+                        <div class="px-1 py-1">
+                            <MenuItem v-slot="{ active }">
+                                <button
+                                    @click="openEditModal"
+                                    :class="[
+                                          active ? 'bg-indigo-500 text-white' : 'text-gray-900',
+                                          'group flex w-full items-center rounded-md px-2 py-2 text-sm',
+                                        ]">
+                                    <PencilIcon class="mr-2 h-5 w-5" aria-hidden="true"/>
+                                    Edit
+                                </button>
+                            </MenuItem>
+                            <MenuItem v-slot="{ active }">
+                                <button
+                                    :class="[
+                                          active ? 'bg-indigo-500 text-white' : 'text-gray-900',
+                                          'group flex w-full items-center rounded-md px-2 py-2 text-sm',
+                                        ]">
+                                    <TrashIcon class="mr-2 h-5 w-5" aria-hidden="true"/>
+                                    Delete
+                                </button>
+                            </MenuItem>
+                        </div>
+                    </MenuItems>
+                </transition>
+            </Menu>
         </div>
         <div class="mb-3">
             <Disclosure v-slot="{ open }">
@@ -48,7 +84,8 @@ function isImage(attachment: { mime: string }) {
         <div class="grid grid-cols-2 lg:grid-cols-3 gap-3 mb-3">
             <template v-for="attachment of post.attachments">
 
-                <div class="group aspect-square bg-blue-100 flex flex-col items-center justify-center text-gray-500 relative">
+                <div
+                    class="group aspect-square bg-blue-100 flex flex-col items-center justify-center text-gray-500 relative">
                     <!-- Download-->
                     <button
                         class="opacity-0 group-hover:opacity-100 transition-all w-8 h-8 flex items-center justify-center text-gray-100 bg-gray-700 rounded absolute right-2 top-2 cursor-pointer hover:bg-gray-800">
@@ -79,14 +116,16 @@ function isImage(attachment: { mime: string }) {
             </template>
         </div>
         <div class="flex gap-2">
-            <button class="text-gray-800 flex gap-1 items-center justify-center bg-gray-100 rounded-lg hover:bg-gray-200 py-2 px-4 flex-1">
+            <button
+                class="text-gray-800 flex gap-1 items-center justify-center bg-gray-100 rounded-lg hover:bg-gray-200 py-2 px-4 flex-1">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">
                     <path
                         d="M7.493 18.75c-.425 0-.82-.236-.975-.632A7.48 7.48 0 016 15.375c0-1.75.599-3.358 1.602-4.634.151-.192.373-.309.6-.397.473-.183.89-.514 1.212-.924a9.042 9.042 0 012.861-2.4c.723-.384 1.35-.956 1.653-1.715a4.498 4.498 0 00.322-1.672V3a.75.75 0 01.75-.75 2.25 2.25 0 012.25 2.25c0 1.152-.26 2.243-.723 3.218-.266.558.107 1.282.725 1.282h3.126c1.026 0 1.945.694 2.054 1.715.045.422.068.85.068 1.285a11.95 11.95 0 01-2.649 7.521c-.388.482-.987.729-1.605.729H14.23c-.483 0-.964-.078-1.423-.23l-3.114-1.04a4.501 4.501 0 00-1.423-.23h-.777zM2.331 10.977a11.969 11.969 0 00-.831 4.398 12 12 0 00.52 3.507c.26.85 1.084 1.368 1.973 1.368H4.9c.445 0 .72-.498.523-.898a8.963 8.963 0 01-.924-3.977c0-1.708.476-3.305 1.302-4.666.245-.403-.028-.959-.5-.959H4.25c-.832 0-1.612.453-1.918 1.227z"/>
                 </svg>
                 Like
             </button>
-            <button class="text-gray-800 flex gap-1 items-center justify-center bg-gray-100 rounded-lg hover:bg-gray-200 py-2 px-4 flex-1">
+            <button
+                class="text-gray-800 flex gap-1 items-center justify-center bg-gray-100 rounded-lg hover:bg-gray-200 py-2 px-4 flex-1">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">
                     <path
                         d="M4.913 2.658c2.075-.27 4.19-.408 6.337-.408 2.147 0 4.262.139 6.337.408 1.922.25 3.291 1.861 3.405 3.727a4.403 4.403 0 00-1.032-.211 50.89 50.89 0 00-8.42 0c-2.358.196-4.04 2.19-4.04 4.434v4.286a4.47 4.47 0 002.433 3.984L7.28 21.53A.75.75 0 016 21v-4.03a48.527 48.527 0 01-1.087-.128C2.905 16.58 1.5 14.833 1.5 12.862V6.638c0-1.97 1.405-3.718 3.413-3.979z"/>

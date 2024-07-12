@@ -5,6 +5,7 @@ use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\PostController;
 
 //Route::get('/', function () {
 //    return Inertia::render('Home', [
@@ -31,8 +32,11 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
 
-    Route::post('/post', [\App\Http\Controllers\PostController::class, 'store'])
+    Route::post('/post', [PostController::class, 'store'])
         ->name('post.create');
+
+    Route::put('/post/{post}', [PostController::class, 'update'])
+        ->name('post.update');
 });
 
 require __DIR__.'/auth.php';

@@ -1,20 +1,26 @@
 <script setup lang="ts">
 import {Disclosure, DisclosureButton, DisclosurePanel, Menu, MenuButton, MenuItem, MenuItems} from '@headlessui/vue'
 import {EllipsisVerticalIcon, PencilIcon, TrashIcon} from '@heroicons/vue/20/solid'
-// import { ChevronUpIcon } from '@heroicons/vue/20/solid'
+import {ArrowDownTrayIcon, ChatBubbleLeftRightIcon, HandThumbUpIcon} from '@heroicons/vue/24/outline'
 import PostUserHeader from "@/Components/app/PostUserHeader.vue";
-import { router } from '@inertiajs/vue3'
+import {router, usePage} from '@inertiajs/vue3'
+import {isImage} from '@/helpers.ts'
+import {PaperClipIcon} from "@heroicons/vue/24/solid/index.js";
+import axiosClient from "@/axiosClient.ts";
+import InputTextArea from "@/Components/InputTextArea.vue";
+import PrimaryButton from "@/Components/PrimaryButton.vue";
+import IndigoButton from "@/Components/app/IndigoButton.vue";
+import {ref} from "vue";
+import ReadMoreReadLess from "@/Components/app/ReadMoreReadLess.vue";
+const authUser = usePage().props.auth.user;
 
 const props = defineProps({
     post: Object
 })
 
-const emit = defineEmits(['editClick'])
+const newCommentText = ref('')
 
-function isImage(attachment: { mime: string }) {
-    const mime = attachment.mime.split('/')
-    return mime[0].toLowerCase() === 'image'
-}
+const emit = defineEmits(['editClick', 'attachmentClick'])
 
 function openEditModal() {
     emit('editClick', props.post)
@@ -27,13 +33,36 @@ function deletePost(){
         })
     }
 }
+
+function openAttachment(ind: any) {
+    emit('attachmentClick', props.post, ind)
+}
+function sendReaction() {
+    axiosClient.post(route('post.reaction', props.post), {
+        reaction: 'like'
+    })
+        .then(({data}) => {
+            props.post.current_user_has_reaction = data.current_user_has_reaction
+            props.post.num_of_reactions = data.num_of_reactions;
+        })
+}
+function createComment() {
+    axiosClient.post(route('post.comment.create', props.post), {
+        comment: newCommentText.value
+    })
+        .then(({data}) => {
+            newCommentText.value = ''
+            props.post.comments.unshift(data)
+            props.post.num_of_comments++;
+        })
+}
 </script>
 
 <template>
     <div class="bg-white border rounded p-4 mb-3">
         <div class="flex items-center justify-between mb-3">
             <PostUserHeader :post="post"/>
-            <Menu as="div" class="relative inline-block text-left">
+            <Menu as="div" class="relative z-10 inline-block text-left">
                 <div>
                     <MenuButton class="w-8 h-8 rounded-full hover:bg-black/5 transition flex items-center justify-center">
                         <EllipsisVerticalIcon class="w-5 h-5" aria-hidden="true" />
@@ -76,74 +105,92 @@ function deletePost(){
             </Menu>
         </div>
         <div class="mb-3">
-            <Disclosure v-slot="{ open }">
-                <div v-if="!open" v-html="post.body.substring(0, 200)" class="ck-content-output"/>
-                <template v-if="post.body.length > 200">
-                    <DisclosurePanel>
-                        <div v-html="post.body" class="ck-content-output"/>
-                    </DisclosurePanel>
-                    <div class="flex justify-end">
-                        <DisclosureButton class="text-blue-500 hover:underline">
-                            {{ open ? 'Read less' : 'Read More' }}
-                        </DisclosureButton>
-                    </div>
-                </template>
-            </Disclosure>
+            <ReadMoreReadLess :content="post.body" />
         </div>
-        <div class="grid grid-cols-2 lg:grid-cols-3 gap-3 mb-3">
-            <template v-for="attachment of post.attachments">
-
-                <div
-                    class="group aspect-square bg-blue-100 flex flex-col items-center justify-center text-gray-500 relative">
+        <div class="grid gap-3 mb-3" :class="[
+            post.attachments.length === 1 ? 'grid-cols-1' : 'grid-cols-2'
+        ]">
+            <template v-for="(attachment, ind) of post.attachments.slice(0, 4)">
+                <div @click="openAttachment(ind)"
+                     class="group aspect-square bg-blue-100 flex flex-col items-center justify-center text-gray-500 relative cursor-pointer">
+                    <div v-if="ind === 3 && post.attachments.length > 4"
+                         class="absolute left-0 top-0 right-0 bottom-0 z-10 bg-black/60 text-white flex items-center justify-center text-2xl">
+                        +{{ post.attachments.length - 4 }} more
+                    </div>
                     <!-- Download-->
-                    <button
-                        class="opacity-0 group-hover:opacity-100 transition-all w-8 h-8 flex items-center justify-center text-gray-100 bg-gray-700 rounded absolute right-2 top-2 cursor-pointer hover:bg-gray-800">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
-                             class="w-4 h-4">
-                            <path fill-rule="evenodd"
-                                  d="M12 2.25a.75.75 0 01.75.75v11.69l3.22-3.22a.75.75 0 111.06 1.06l-4.5 4.5a.75.75 0 01-1.06 0l-4.5-4.5a.75.75 0 111.06-1.06l3.22 3.22V3a.75.75 0 01.75-.75zm-9 13.5a.75.75 0 01.75.75v2.25a1.5 1.5 0 001.5 1.5h13.5a1.5 1.5 0 001.5-1.5V16.5a.75.75 0 011.5 0v2.25a3 3 0 01-3 3H5.25a3 3 0 01-3-3V16.5a.75.75 0 01.75-.75z"
-                                  clip-rule="evenodd"/>
-                        </svg>
-                    </button>
+                    <a @click.stop :href="route('post.download', attachment)"
+                       class="z-20 opacity-0 group-hover:opacity-100 transition-all w-8 h-8 flex items-center justify-center text-gray-100 bg-gray-700 rounded absolute right-2 top-2 cursor-pointer hover:bg-gray-800">
+                        <ArrowDownTrayIcon class="w-4 h-4" />
+                    </a>
                     <!--/ Download-->
 
                     <img v-if="isImage(attachment)"
                          :src="attachment.url"
-                         class="object-cover aspect-square"/>
-                    <template v-else>
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
-                             class="w-12 h-12">
-                            <path
-                                d="M5.625 1.5c-1.036 0-1.875.84-1.875 1.875v17.25c0 1.035.84 1.875 1.875 1.875h12.75c1.035 0 1.875-.84 1.875-1.875V12.75A3.75 3.75 0 0016.5 9h-1.875a1.875 1.875 0 01-1.875-1.875V5.25A3.75 3.75 0 009 1.5H5.625z"/>
-                            <path
-                                d="M12.971 1.816A5.23 5.23 0 0114.25 5.25v1.875c0 .207.168.375.375.375H16.5a5.23 5.23 0 013.434 1.279 9.768 9.768 0 00-6.963-6.963z"/>
-                        </svg>
-
+                         class="object-contain aspect-square"/>
+                    <div v-else class="flex flex-col justify-center items-center">
+                        <PaperClipIcon class="w-10 h-10 mb-3"/>
                         <small>{{ attachment.name }}</small>
-                    </template>
+                    </div>
                 </div>
             </template>
         </div>
-        <div class="flex gap-2">
-            <button
-                class="text-gray-800 flex gap-1 items-center justify-center bg-gray-100 rounded-lg hover:bg-gray-200 py-2 px-4 flex-1">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">
-                    <path
-                        d="M7.493 18.75c-.425 0-.82-.236-.975-.632A7.48 7.48 0 016 15.375c0-1.75.599-3.358 1.602-4.634.151-.192.373-.309.6-.397.473-.183.89-.514 1.212-.924a9.042 9.042 0 012.861-2.4c.723-.384 1.35-.956 1.653-1.715a4.498 4.498 0 00.322-1.672V3a.75.75 0 01.75-.75 2.25 2.25 0 012.25 2.25c0 1.152-.26 2.243-.723 3.218-.266.558.107 1.282.725 1.282h3.126c1.026 0 1.945.694 2.054 1.715.045.422.068.85.068 1.285a11.95 11.95 0 01-2.649 7.521c-.388.482-.987.729-1.605.729H14.23c-.483 0-.964-.078-1.423-.23l-3.114-1.04a4.501 4.501 0 00-1.423-.23h-.777zM2.331 10.977a11.969 11.969 0 00-.831 4.398 12 12 0 00.52 3.507c.26.85 1.084 1.368 1.973 1.368H4.9c.445 0 .72-.498.523-.898a8.963 8.963 0 01-.924-3.977c0-1.708.476-3.305 1.302-4.666.245-.403-.028-.959-.5-.959H4.25c-.832 0-1.612.453-1.918 1.227z"/>
-                </svg>
-                Like
-            </button>
-            <button
-                class="text-gray-800 flex gap-1 items-center justify-center bg-gray-100 rounded-lg hover:bg-gray-200 py-2 px-4 flex-1">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">
-                    <path
-                        d="M4.913 2.658c2.075-.27 4.19-.408 6.337-.408 2.147 0 4.262.139 6.337.408 1.922.25 3.291 1.861 3.405 3.727a4.403 4.403 0 00-1.032-.211 50.89 50.89 0 00-8.42 0c-2.358.196-4.04 2.19-4.04 4.434v4.286a4.47 4.47 0 002.433 3.984L7.28 21.53A.75.75 0 016 21v-4.03a48.527 48.527 0 01-1.087-.128C2.905 16.58 1.5 14.833 1.5 12.862V6.638c0-1.97 1.405-3.718 3.413-3.979z"/>
-                    <path
-                        d="M15.75 7.5c-1.376 0-2.739.057-4.086.169C10.124 7.797 9 9.103 9 10.609v4.285c0 1.507 1.128 2.814 2.67 2.94 1.243.102 2.5.157 3.768.165l2.782 2.781a.75.75 0 001.28-.53v-2.39l.33-.026c1.542-.125 2.67-1.433 2.67-2.94v-4.286c0-1.505-1.125-2.811-2.664-2.94A49.392 49.392 0 0015.75 7.5z"/>
-                </svg>
-                Comment
-            </button>
-        </div>
+        <Disclosure v-slot="{ open }">
+            <div class="flex gap-2">
+                <button
+                    @click="sendReaction"
+                    class="text-gray-800 flex gap-1 items-center justify-center  rounded-lg py-2 px-4 flex-1"
+                    :class="[
+                    post.current_user_has_reaction ?
+                     'bg-sky-100 hover:bg-sky-200' :
+                     'bg-gray-100  hover:bg-gray-200'
+                ]"
+                >
+                    <HandThumbUpIcon class="w-5 h-5"/>
+                    <span class="mr-2">{{ post.num_of_reactions }}</span>
+                    {{ post.current_user_has_reaction ? 'Unlike' : 'Like' }}
+                </button>
+                <DisclosureButton
+                    class="text-gray-800 flex gap-1 items-center justify-center bg-gray-100 rounded-lg hover:bg-gray-200 py-2 px-4 flex-1"
+                >
+                    <ChatBubbleLeftRightIcon class="w-5 h-5"/>
+                    <span class="mr-2">{{ post.num_of_comments }}</span>
+                    Comment
+                </DisclosureButton>
+            </div>
+
+            <DisclosurePanel class="mt-3">
+                <div class="flex gap-2 mb-3">
+                    <a href="javascript:void(0)">
+                        <img :src="authUser.avatar_url"
+                             class="w-[40px] rounded-full border border-2 transition-all hover:border-blue-500"/>
+                    </a>
+                    <div class="flex flex-1">
+                        <InputTextArea v-model="newCommentText" placeholder="Enter your comment here" rows="1"
+                                       class="w-full max-h-[160px] resize-none rounded-r-none"></InputTextArea>
+                        <IndigoButton @click="createComment" class="rounded-l-none w-[100px] ">Submit</IndigoButton>
+                    </div>
+                </div>
+                <div>
+                    <div v-for="comment of post.comments" :key="comment.id" class="mb-4">
+                        <div class="flex gap-2">
+                            <a href="javascript:void(0)">
+                                <img :src="comment.user.avatar_url"
+                                     class="w-[40px] rounded-full border border-2 transition-all hover:border-blue-500"/>
+                            </a>
+                            <div>
+                                <h4 class="font-bold">
+                                    <a href="javascript:void(0)" class="hover:underline">
+                                        {{ comment.user.name }}
+                                    </a>
+                                </h4>
+                                <small class="text-xs text-gray-400">{{ comment.updated_at }}</small>
+                            </div>
+                        </div>
+                        <ReadMoreReadLess :content="comment.comment" content-class="text-sm flex flex-1 ml-12" />
+                    </div>
+                </div>
+            </DisclosurePanel>
+        </Disclosure>
     </div>
 </template>
 

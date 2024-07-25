@@ -106,7 +106,7 @@ function startCommentEdit(comment: any) {
     }
 }
 function createComment() {
-    axiosClient.post(route('post.comment.create', props.post), {
+    axiosClient.post(route('comment.create', props.post), {
         comment: newCommentText.value,
         parent_id: props.parentComment?.id || null
     })

@@ -66,6 +66,7 @@ onMounted(() => {
                   @editClick="openEditModal"
                   @attachmentClick="openAttachmentPreviewModal"
         />
+        <div ref="loadMoreIntersect"></div>
         <PostModal :post="editPost" v-model="showEditModal" @hide="onModalHide"/>
         <AttachmentPreviewModal :attachments="previewAttachmentsPost.post?.attachments || []"
                                 v-model:index="previewAttachmentsPost.index"

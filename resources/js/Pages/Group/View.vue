@@ -120,8 +120,14 @@
                     </TabList>
 
                     <TabPanels class="mt-2">
-                        <TabPanel class="bg-white p-3 shadow">
-                            Posts
+                        <TabPanel>
+                            <template v-if="posts">
+                                <CreatePost :group="group"/>
+                                <PostList :posts="posts.data" class="flex-1"/>
+                            </template>
+                            <div v-else class="py-8 text-center">
+                                You don't have permission to view these posts.
+                            </div>
                         </TabPanel>
                         <TabPanel v-if="isJoinedToGroup">
                             <div class="mb-3">
@@ -181,6 +187,8 @@ import InviteUserModal from "@/Pages/Group/InviteUserModal.vue";
 import UserListItem from "@/Components/app/UserListItem.vue";
 import TextInput from "@/Components/TextInput.vue";
 import GroupForm from "@/Components/app/GroupForm.vue";
+import PostList from "@/Components/app/PostList.vue";
+import CreatePost from "@/Components/app/CreatePost.vue";
 
 const imagesForm = useForm({
     thumbnail: null,
@@ -203,6 +211,7 @@ const props: any = defineProps({
     group: {
         type: Object
     },
+    posts: Object,
     users: Array,
     requests: Array
 });

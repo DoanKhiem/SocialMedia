@@ -2,7 +2,7 @@
 
 import PostItem from "@/Components/app/PostItem.vue";
 import PostModal from "@/Components/app/PostModal.vue";
-import {onMounted, onUpdated, ref} from "vue";
+import {onMounted, onUpdated, ref, watch} from "vue";
 import {usePage} from "@inertiajs/vue3";
 import AttachmentPreviewModal from "@/Components/app/AttachmentPreviewModal.vue";
 import axiosClient from "@/axiosClient.js";
@@ -17,12 +17,21 @@ const previewAttachmentsPost = ref({})
 const loadMoreIntersect: any = ref(null)
 
 const allPosts = ref({
-    data: page.props.posts.data,
-    next: page.props.posts.links.next
+    data: [],
+    next: null
 })
 const props = defineProps({
     posts: Array
 })
+
+watch(() => page.props.posts, () => {
+    if (page.props.posts) {
+        allPosts.value = {
+            data: page.props.posts.data,
+            next: page.props.posts.links.next
+        }
+    }
+}, {deep: true, immediate: true})
 function openEditModal(post: object) {
     editPost.value = post;
     showEditModal.value = true;

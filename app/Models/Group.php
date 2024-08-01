@@ -10,6 +10,7 @@ use Spatie\Sluggable\SlugOptions;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use App\Http\Enums\GroupUserRole;
+use App\Http\Enums\GroupUserStatus;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Group extends Model
@@ -35,12 +36,42 @@ class Group extends Model
 
     public function isAdmin($userId): bool
     {
-        return $this->currentUserGroup?->user_id == $userId;
+        return GroupUser::query()
+            ->where('user_id', $userId)
+            ->where('group_id', $this->id)
+            ->where('role', GroupUserRole::ADMIN->value)
+            ->exists();
+    }
+
+    public function hasApprovedUser($userId): bool
+    {
+        return GroupUser::query()
+            ->where('user_id', $userId)
+            ->where('group_id', $this->id)
+            ->where('status', GroupUserStatus::APPROVED->value)
+            ->exists();
+    }
+
+    public function isOwner($userId): bool
+    {
+        return $this->user_id == $userId;
     }
 
     public function adminUsers(): BelongsToMany
     {
         return $this->belongsToMany(User::class, 'group_users')
             ->wherePivot('role', GroupUserRole::ADMIN->value);
+    }
+
+    public function pendingUsers(): BelongsToMany
+    {
+        return $this->belongsToMany(User::class, 'group_users')
+            ->wherePivot('status', GroupUserStatus::PENDING->value);
+    }
+
+    public function approvedUsers(): BelongsToMany
+    {
+        return $this->belongsToMany(User::class, 'group_users')
+            ->wherePivot('status', GroupUserStatus::APPROVED->value);
     }
 }

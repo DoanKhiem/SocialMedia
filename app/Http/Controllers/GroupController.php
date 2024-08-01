@@ -12,28 +12,70 @@ use App\Models\GroupUser;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
+use App\Http\Resources\GroupUserResource;
 use Illuminate\Http\Request;
+use App\Models\User;
 use App\Notifications\InvitationApproved;
 use App\Notifications\InvitationInGroup;
 use Carbon\Carbon;
+use App\Notifications\RoleChanged;
 use App\Http\Requests\InviteUsersRequest;
 use Illuminate\Support\Str;
 use Symfony\Component\HttpFoundation\Exception\BadRequestException;
 use App\Notifications\RequestToJoinGroup;
 use Illuminate\Support\Facades\Notification;
 use PhpParser\Node\Stmt\GroupUse;
+use App\Notifications\RequestApproved;
+use App\Http\Resources\UserResource;
+use Illuminate\Validation\Rule;
+use Illuminate\Validation\Rules\Enum;
+use App\Models\Post;
+use App\Http\Resources\PostResource;
 
 class GroupController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function profile(Group $group)
+    public function profile(Request $request, Group $group)
     {
         $group->load('currentUserGroup');
+
+        $userId = Auth::id();
+
+        if ($group->hasApprovedUser($userId)) {
+            $posts = Post::postsForTimeline($userId)
+                ->where('group_id', $group->id)
+                ->paginate(10);
+            $posts = PostResource::collection($posts);
+        } else {
+            return Inertia::render('Group/View', [
+                'success' => session('success'),
+                'group' => new GroupResource($group),
+                'posts' => null,
+                'users' => [],
+                'requests' => []
+            ]);
+        }
+
+        if ($request->wantsJson()) {
+            return PostResource::collection($posts);
+        }
+
+        $users = User::query()
+            ->select(['users.*', 'gu.role', 'gu.status', 'gu.group_id'])
+            ->join('group_users AS gu', 'gu.user_id', 'users.id')
+            ->orderBy('users.name')
+            ->where('group_id', $group->id)
+            ->get();
+        $requests = $group->pendingUsers()->orderBy('name')->get();
+
         return Inertia::render('Group/View', [
             'success' => session('success'),
-            'group' => new GroupResource($group)
+            'group' => new GroupResource($group),
+            'posts' => $posts,
+            'users' => GroupUserResource::collection($users),
+            'requests' => UserResource::collection($requests)
         ]);
     }
 
@@ -62,19 +104,13 @@ class GroupController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     */
-    public function show(Group $group)
-    {
-        //
-    }
-
-    /**
      * Update the specified resource in storage.
      */
     public function update(UpdateGroupRequest $request, Group $group)
     {
-        //
+        $group->update($request->validated());
+
+        return back()->with('success', "Group was updated");
     }
 
     /**
@@ -207,5 +243,70 @@ class GroupController extends Controller
         ]);
 
         return back()->with('success', $successMessage);
+    }
+
+    public function approveRequest(Request $request, Group $group)
+    {
+        if (!$group->isAdmin(Auth::id())) {
+            return response("You don't have permission to perform this action", 403);
+        }
+
+        $data = $request->validate([
+            'user_id' => ['required'],
+            'action' => ['required']
+        ]);
+
+        $groupUser = GroupUser::where('user_id', $data['user_id'])
+            ->where('group_id', $group->id)
+            ->where('status', GroupUserStatus::PENDING->value)
+            ->first();
+
+        if ($groupUser) {
+            $approved = false;
+            if ($data['action'] === 'approve') {
+                $approved = true;
+                $groupUser->status = GroupUserStatus::APPROVED->value;
+            } else {
+                $groupUser->status = GroupUserStatus::REJECTED->value;
+            }
+            $groupUser->save();
+
+            $user = $groupUser->user;
+            $user->notify(new RequestApproved($groupUser->group, $user, $approved));
+
+            return back()->with('success', 'User "'.$user->name.'" was '.($approved ? 'approved' : 'rejected'));
+        }
+
+        return back();
+    }
+
+    public function changeRole(Request $request, Group $group)
+    {
+        if (!$group->isAdmin(Auth::id())) {
+            return response("You don't have permission to perform this action", 403);
+        }
+
+        $data = $request->validate([
+            'user_id' => ['required'],
+            'role' => ['required', Rule::enum(GroupUserRole::class)]
+        ]);
+
+        $user_id = $data['user_id'];
+        if ($group->isOwner($user_id)) {
+            return response("You can't change role of the owner of the group", 403);
+        }
+
+        $groupUser = GroupUser::where('user_id', $user_id)
+            ->where('group_id', $group->id)
+            ->first();
+
+        if ($groupUser) {
+            $groupUser->role = $data['role'];
+            $groupUser->save();
+
+            $groupUser->user->notify(new RoleChanged($group, $data['role']));
+
+            return back();
+        }
     }
 }

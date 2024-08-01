@@ -128,7 +128,10 @@
                                 <UserListItem v-for="user of users"
                                               :user="user"
                                               :key="user.id"
-                                              class="shadow rounded-lg"/>
+                                              :show-role-dropdown="isCurrentUserAdmin"
+                                              :disable-role-dropdown="group.user_id === user.id"
+                                              class="shadow rounded-lg"
+                                              @role-change="onRoleChange"/>
                             </div>
                         </TabPanel>
                         <TabPanel v-if="isCurrentUserAdmin" class="">
@@ -223,6 +226,7 @@ function resetThurmbnailImage() {
 }
 function submitCoverImage() {
     imagesForm.post(route('group.updateImages', props.group.slug), {
+        preserveScroll: true,
         onSuccess: () => {
             showNotification.value = true;
             resetCoverImage()
@@ -234,6 +238,7 @@ function submitCoverImage() {
 }
 function submitThurmbnailImage() {
     imagesForm.post(route('group.updateImages', props.group.slug), {
+        preserveScroll: true,
         onSuccess: () => {
             showNotification.value = true;
             resetThurmbnailImage()
@@ -245,7 +250,9 @@ function submitThurmbnailImage() {
 }
 function joinToGroup() {
     const form = useForm({})
-    form.post(route('group.join', props.group.slug))
+    form.post(route('group.join', props.group.slug), {
+        preserveScroll: true
+    })
 }
 
 function approveUser(user: any) {
@@ -253,14 +260,28 @@ function approveUser(user: any) {
         user_id: user.id,
         action: 'approve'
     })
-    form.post(route('group.approveRequest', props.group.slug))
+    form.post(route('group.approveRequest', props.group.slug), {
+        preserveScroll: true
+    })
 }
 function rejectUser(user: any) {
     const form = useForm({
         user_id: user.id,
         action: 'reject'
     })
-    form.post(route('group.approveRequest', props.group.slug))
+    form.post(route('group.approveRequest', props.group.slug), {
+        preserveScroll: true
+    })
+}
+function onRoleChange(user: any, role: any) {
+    console.log(user, role)
+    const form = useForm({
+        user_id: user.id,
+        role
+    })
+    form.post(route('group.changeRole', props.group.slug), {
+        preserveScroll: true
+    })
 }
 </script>
 
